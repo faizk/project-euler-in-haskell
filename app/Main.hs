@@ -3,8 +3,8 @@ module Main (main) where
 
 import Options.Applicative
 
-import qualified PE.P1to20
 import System.IO (hPutStrLn, stderr)
+import qualified PE.P1to20
 
 data Args = Args
   { problem   :: Int
@@ -23,6 +23,8 @@ solutions :: [(Int, (String, IO String))]
 solutions = [1..] `zip`
   [ ("Find the sum of all the multiples of or below 1000",
       return $ show PE.P1to20.sumOfMultiplesOf3Or5Below1000)
+  , ("By considering the terms in the Fibonacci sequence whose values do not exceed four million, find the sum of the even-valued terms.",
+      return $ show PE.P1to20.sumOfEvenFibonacciTermsWithin4MM)
   ]
 
 runSolution :: Args -> IO ()

@@ -1,5 +1,7 @@
+{-# LANGUAGE NumericUnderscores #-}
 module PE.P1to20
     ( multiplesOf3Or5, sumOfMultiplesOf3Or5Below1000
+    , fibonacci, sumOfEvenFibonacciTermsWithin4MM
     ) where
 
 multiplesOf3Or5 :: Int -> [Int]
@@ -10,3 +12,12 @@ multiplesOf3Or5 below =
 
 sumOfMultiplesOf3Or5Below1000 :: Int
 sumOfMultiplesOf3Or5Below1000 = sum $ multiplesOf3Or5 1000
+
+-- P2
+fibonacci :: [Integer]
+fibonacci = 1 : fib' 1 2 where fib' a b = b : fib' b (a+b)
+
+sumOfEvenFibonacciTermsWithin4MM :: Integer
+sumOfEvenFibonacciTermsWithin4MM =
+  sum $ takeWhile (<= limit) $ filter even fibonacci
+    where limit = 4_000_000
