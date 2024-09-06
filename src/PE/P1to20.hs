@@ -2,6 +2,7 @@
 module PE.P1to20
     ( multiplesOf3Or5, sumOfMultiplesOf3Or5Below1000
     , fibonacci, sumOfEvenFibonacciTermsWithin4MM
+    , primes, primeFactors
     ) where
 
 multiplesOf3Or5 :: Int -> [Int]
@@ -21,3 +22,16 @@ sumOfEvenFibonacciTermsWithin4MM :: Integer
 sumOfEvenFibonacciTermsWithin4MM =
   sum $ takeWhile (<= limit) $ filter even fibonacci
     where limit = 4_000_000
+
+-- P3
+primes :: [Integer]
+primes = sieve [] [2..]
+  where
+    sieve ps (n:ns) = n : sieve (n:ps) (filter (not . (n `factorOf`)) ns)
+    sieve ps [] = ps
+
+factorOf :: Integer -> Integer -> Bool
+factorOf d n = n `rem` d == 0
+
+primeFactors :: Integer -> [Integer]
+primeFactors n = filter (`factorOf` n) $ takeWhile (<= n) primes

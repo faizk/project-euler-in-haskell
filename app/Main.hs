@@ -1,4 +1,5 @@
 {-# LANGUAGE NamedFieldPuns #-}
+{-# LANGUAGE NumericUnderscores #-}
 module Main (main) where
 
 import Options.Applicative
@@ -25,6 +26,8 @@ solutions = [1..] `zip`
       return $ show PE.P1to20.sumOfMultiplesOf3Or5Below1000)
   , ("By considering the terms in the Fibonacci sequence whose values do not exceed four million, find the sum of the even-valued terms.",
       return $ show PE.P1to20.sumOfEvenFibonacciTermsWithin4MM)
+  , ("What is the largest prime factor of the number 600,851,475,143?",
+      return $ show $ PE.P1to20.primeFactors 600_851_475_143)
   ]
 
 runSolution :: Args -> IO ()
