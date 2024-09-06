@@ -22,8 +22,11 @@ main = hspec $ do
         \n -> isPrime n ==> primeFactors n `shouldBe` [n]
       it "should return 5,7,13,29 given 13195" $ do
         primeFactors 13195 `shouldBe` [5,7,13,29]
+      prop "must be as correct as the naive version" $
+        \n -> primeFactors n `shouldBe` primeFactorsNaive n
     where
       primeFactors = PE.P1to20.primeFactors
+      primeFactorsNaive = PE.P1to20.primeFactors'
 
 -- UTILS
 isPrime :: Integer -> Bool

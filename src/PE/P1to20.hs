@@ -2,7 +2,7 @@
 module PE.P1to20
     ( multiplesOf3Or5, sumOfMultiplesOf3Or5Below1000
     , fibonacci, sumOfEvenFibonacciTermsWithin4MM
-    , primes, primeFactors
+    , primes, primeFactors, primeFactors'
     ) where
 
 multiplesOf3Or5 :: Int -> [Int]
@@ -25,13 +25,28 @@ sumOfEvenFibonacciTermsWithin4MM =
 
 -- P3
 primes :: [Integer]
-primes = sieve [] [2..]
+primes = sieve [2..]
   where
-    sieve ps (n:ns) = n : sieve (n:ps) (filter (not . (n `factorOf`)) ns)
-    sieve ps [] = ps
+    -- sieve (n:ns) = n : sieve (filter (not . (n `factorOf`)) ns)
+    sieve (n:ns) = n : sieve [x | x <- ns, x `rem` n /= 0]
+    sieve [] = []
 
 factorOf :: Integer -> Integer -> Bool
 factorOf d n = n `rem` d == 0
 
+{- naive version -}
+primeFactors' :: Integer -> [Integer]
+primeFactors' n = filter (`factorOf` n) $ takeWhile (<= n) primes
+
 primeFactors :: Integer -> [Integer]
-primeFactors n = filter (`factorOf` n) $ takeWhile (<= n) primes
+primeFactors n =
+  sweep (takeWhile (<= n) primes) n
+  where
+    sweep (p:ps) n' | n' `rem` p /= 0 = sweep ps n'
+    sweep (p:ps) n' = p : sweep (takeWhile (<= n'') ps) n''
+      where n'' = n' `red` p
+    sweep _ n' | n' <= 1 = []
+    sweep [] n' = [n']
+    red n' d = case n' `divMod` d of
+      (n'', 0) -> red n'' d
+      (_, _) -> n'
