@@ -29,7 +29,7 @@ solutions = [1..] `zip`
   , ("What is the largest prime factor of the number 600,851,475,143?",
       return $ show $ PE.P1to20.primeFactors 600_851_475_143)
   , ("Find the largest palindrome made from the product of two 3-digit numbers.",
-      return $ show PE.P1to20.largestPalindrimeProductOf3DigitNumbers)
+      return $ show $ let digits = 3 in PE.P1to20.largestPalindrimeProduct digits)
   ]
 
 runSolution :: Args -> IO ()

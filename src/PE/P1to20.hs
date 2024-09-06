@@ -3,8 +3,10 @@ module PE.P1to20
     ( multiplesOf3Or5, sumOfMultiplesOf3Or5Below1000
     , fibonacci, sumOfEvenFibonacciTermsWithin4MM
     , primes, primeFactors, primeFactors'
-    , largestPalindrimeProductOf3DigitNumbers
+    , largestPalindrimeProduct
     ) where
+
+import Numeric.Natural
 
 multiplesOf3Or5 :: Int -> [Int]
 multiplesOf3Or5 below =
@@ -55,8 +57,11 @@ primeFactors n =
       (_, _) -> n'
 
 -- P4
-largestPalindrimeProductOf3DigitNumbers :: Int
-largestPalindrimeProductOf3DigitNumbers =
+largestPalindrimeProduct :: Natural -> Integer
+largestPalindrimeProduct digits =
   foldr max 0 $ filter ((\s -> reverse s == s) . show) ns
-    where ns  = [(x*y) | x <- ddd, y <- ddd]
-          ddd = [100..999]
+    where ns   = [x*y | x <- ddd, y <- ddd']
+          ddd  = [s..e]
+          ddd' = filter (\n -> n `rem` 11 == 0) ddd
+          s = floor $ 10**(fromIntegral digits - 1)
+          e = floor $ (10**fromIntegral digits) -1
