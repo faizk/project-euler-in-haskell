@@ -39,11 +39,11 @@ primeFactors' :: Integer -> [Integer]
 primeFactors' n = filter (`factorOf` n) $ takeWhile (<= n) primes
 
 primeFactors :: Integer -> [Integer]
-primeFactors n =
-  sweep (takeWhile (<= n) primes) n
+primeFactors n = sweep (takeWhile (<= (root n)) primes) n
   where
+    root n = floor $ sqrt $ fromIntegral n
     sweep (p:ps) n' | n' `rem` p /= 0 = sweep ps n'
-    sweep (p:ps) n' = p : sweep (takeWhile (<= n'') ps) n''
+    sweep (p:ps) n' = p : sweep (takeWhile (<= root (n'')) ps) n''
       where n'' = n' `red` p
     sweep _ n' | n' <= 1 = []
     sweep [] n' = [n']
