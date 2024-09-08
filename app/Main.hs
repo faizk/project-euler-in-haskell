@@ -34,6 +34,8 @@ solutions = [1..] `zip`
      return $ show $ PE.P1to20.smallestMultiple 1 20)
   , ("Find the difference between the sum of the squares of the first one hundred natural numbers and the square of the sum.",
      return $ show $ PE.P1to20.suSqDiff [1..100])
+  , ("What is the What is the 10,001 st prime number?",
+     return $ show $ take 1 $ drop 10_000 PE.P1to20.primes)
   ]
 
 runSolution :: Args -> IO ()

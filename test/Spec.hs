@@ -2,6 +2,7 @@ import Test.Hspec
 import Test.QuickCheck
 import Test.Hspec.QuickCheck
 
+import Lib (isPrime)
 import qualified PE.P1to20
 
 main :: IO ()
@@ -38,7 +39,3 @@ main = hspec $ do
       prop "must match it's naive version" $
         \l -> PE.P1to20.suSqDiff l `shouldBe` PE.P1to20.suSqDiffNaive l
 
--- UTILS
-isPrime :: Integer -> Bool
-isPrime n | n <= 1 = False
-isPrime n = all ((/= 0) . (n `mod`)) [2 .. floor (sqrt (fromIntegral n))]
