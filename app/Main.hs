@@ -30,6 +30,10 @@ solutions = [1..] `zip`
       return $ show $ PE.P1to20.primeFactors 600_851_475_143)
   , ("Find the largest palindrome made from the product of two 3-digit numbers.",
       return $ show $ let digits = 3 in PE.P1to20.largestPalindrimeProduct digits)
+  , ("What is the smallest positive number that is evenly divisible by all of the numbers from 1 to 20 ?",
+     return $ show $ PE.P1to20.smallestMultiple 1 20)
+  , ("Find the difference between the sum of the squares of the first one hundred natural numbers and the square of the sum.",
+     return $ show $ PE.P1to20.suSqDiff [1..100])
   ]
 
 runSolution :: Args -> IO ()

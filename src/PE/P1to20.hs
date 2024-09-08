@@ -4,7 +4,11 @@ module PE.P1to20
     , fibonacci, sumOfEvenFibonacciTermsWithin4MM
     , primes, primeFactors, primeFactors'
     , largestPalindrimeProduct
+    , smallestMultiple
+    , suSqDiff, suSqDiffNaive
     ) where
+
+import Data.List (find)
 
 import Numeric.Natural
 
@@ -65,3 +69,25 @@ largestPalindrimeProduct digits =
           ddd' = filter (\n -> n `rem` 11 == 0) ddd
           s = floor $ 10**(fromIntegral digits - 1)
           e = floor $ (10**fromIntegral digits) -1
+
+-- P5
+{- 2520 is the smallest number that can be divided by each of the
+   numbers from to 1 to 10 without any remainder.
+   What is the smallest positive number that is evenly divisible
+   by all of the numbers from 1 to 20 ?
+-}
+smallestMultiple :: Integer -> Integer -> Maybe Integer
+smallestMultiple from to = find f $ map (*jump) [1..]
+  where f n = all (($ n) . divisibleBy) [from..to]
+        divisibleBy d n = n `rem` d == 0
+        jump = product $ takeWhile (<= to) primes
+
+-- P6
+suSqDiff :: [Integer] -> Integer
+suSqDiff ns = sum [ a*b | (i,a) <- ind ns, (j,b) <- ind ns, i /= j ]
+  where ind = zip [1..]
+
+suSqDiffNaive :: [Integer] -> Integer
+suSqDiffNaive ns = sqsu - susq
+  where sqsu = let s = sum ns in s * s
+        susq = sum $ map (\i -> i*i) ns

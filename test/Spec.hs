@@ -11,7 +11,10 @@ main = hspec $ do
     it "sum under 10 is 23" $ do
       sum (PE.P1to20.multiplesOf3Or5 10) `shouldBe` 23
 
-  describe "P(2) Largest prime factor" $ do
+  describe "P(2) Largest prime factor" $
+    let primeFactors = PE.P1to20.primeFactors
+        primeFactorsNaive = PE.P1to20.primeFactors'
+    in do
     describe "primes" $ do
       prop "must return only prime numbers" $
         \n -> all isPrime $ take n PE.P1to20.primes
@@ -24,9 +27,16 @@ main = hspec $ do
         primeFactors 13195 `shouldBe` [5,7,13,29]
       prop "must be as correct as the naive version" $
         \n -> primeFactors n `shouldBe` primeFactorsNaive n
-    where
-      primeFactors = PE.P1to20.primeFactors
-      primeFactorsNaive = PE.P1to20.primeFactors'
+
+  describe "P(5) Smallest Multiple" $ do
+    describe "smallestMultiple" $ do
+      it "returns 2520 for all numbers 1..10" $ do
+        PE.P1to20.smallestMultiple 1 10 `shouldBe` Just 2520
+
+  describe "P(6) Sum Square Difference" $ do
+    describe "suSqDiff" $ do
+      prop "must match it's naive version" $
+        \l -> PE.P1to20.suSqDiff l `shouldBe` PE.P1to20.suSqDiffNaive l
 
 -- UTILS
 isPrime :: Integer -> Bool
