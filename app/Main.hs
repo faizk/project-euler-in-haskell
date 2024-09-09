@@ -36,6 +36,8 @@ solutions = [1..] `zip`
      return $ show $ PE.P1to20.suSqDiff [1..100])
   , ("What is the What is the 10,001 st prime number?",
      return $ show $ take 1 $ drop 10_000 PE.P1to20.primes)
+  , ("Find the thirteen adjacent digits in the 1000-digit number " ++ show PE.P1to20.thousandDigits ++ " that have the greatest product. What is the value of this product?",
+     return $ show $ PE.P1to20.largestProductInSeries 13 PE.P1to20.thousandDigits)
   ]
 
 runSolution :: Args -> IO ()
