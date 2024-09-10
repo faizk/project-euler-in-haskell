@@ -40,6 +40,8 @@ solutions = [1..] `zip`
      return $ show $ PE.P1to20.largestProductInSeries 13 PE.P1to20.thousandDigits)
   , ("There exists exactly one Pythagorean triplet for which a+b+c=1000. Find the product .",
      return $ show $ take 1 PE.P1to20.p9)
+  , ("Find the sum of all the primes below two million.",
+     return $ show $ PE.P1to20.p10SumOfPrimes 2_000_000)
   ]
 
 runSolution :: Args -> IO ()

@@ -9,6 +9,7 @@ module PE.P1to20
     , suSqDiff, suSqDiffNaive
     , largestProductInSeries, thousandDigits
     , pythagoreanTriplets, p9
+    , primes', p10SumOfPrimes
     ) where
 
 import Data.List (find)
@@ -142,3 +143,16 @@ pythagoreanTriplets =
 p9 ::  [((Integer, Integer, Integer), Integer)]
 p9 = [((a,b,c), a*b*c) | (a,b,c) <- pythagoreanTriplets, a+b+c==1000]
 
+-- P10
+-- Summation of Primes
+
+primes' :: [Integer]
+primes' = filter isPrime cands
+  where
+    isPrime n = all ((/= 0) . (n `mod`)) $ takeWhile (<= lim) cands
+      where lim = floor $ sqrt (fromIntegral n :: Double)
+    cands = 2:3:5:7: [ i | i<-[11..], not (any (i `divBy`) [2,3,5,7])]
+    divBy n d = n `rem` d == 0
+
+p10SumOfPrimes :: Integer -> Integer
+p10SumOfPrimes lim = sum $ takeWhile (<= lim) primes'
