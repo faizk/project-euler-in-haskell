@@ -20,7 +20,7 @@ args = Args
       <> metavar "PROBLEM NUMBER"
       )
 
-solutions :: [(Int, (String, IO String))]
+solutions :: (MonadFail m) => [(Int, (String, m String))]
 solutions = [1..] `zip`
   [ ("Find the sum of all the multiples of or below 1000",
       return $ show PE.P1to20.sumOfMultiplesOf3Or5Below1000)
@@ -38,6 +38,8 @@ solutions = [1..] `zip`
      return $ show $ take 1 $ drop 10_000 PE.P1to20.primes)
   , ("Find the thirteen adjacent digits in the 1000-digit number " ++ show PE.P1to20.thousandDigits ++ " that have the greatest product. What is the value of this product?",
      return $ show $ PE.P1to20.largestProductInSeries 13 PE.P1to20.thousandDigits)
+  , ("There exists exactly one Pythagorean triplet for which a+b+c=1000. Find the product .",
+     return $ show $ take 1 PE.P1to20.p9)
   ]
 
 runSolution :: Args -> IO ()

@@ -8,6 +8,7 @@ module PE.P1to20
     , smallestMultiple
     , suSqDiff, suSqDiffNaive
     , largestProductInSeries, thousandDigits
+    , pythagoreanTriplets, p9
     ) where
 
 import Data.List (find)
@@ -131,3 +132,13 @@ thousandDigitString = [r|
 05886116467109405077541002256983155200055935729725
 71636269561882670428252483600823257530420752963450
 |]
+
+-- P9
+-- Special Pythagorean Triplet
+pythagoreanTriplets :: [(Integer, Integer, Integer)]
+pythagoreanTriplets =
+  [(a, b, c) | c<-[1..], b<-[1..(c-1)], a<-[1..(b-1)], a*a + b*b == c*c]
+
+p9 ::  [((Integer, Integer, Integer), Integer)]
+p9 = [((a,b,c), a*b*c) | (a,b,c) <- pythagoreanTriplets, a+b+c==1000]
+
