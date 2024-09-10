@@ -39,6 +39,7 @@ library
     , base >=4.7 && <5
     , optparse-applicative
     , raw-strings-qq
+    , vector
   default-language: Haskell2010
 
 executable project-euler-exe
@@ -56,6 +57,7 @@ executable project-euler-exe
     , optparse-applicative
     , project-euler
     , raw-strings-qq
+    , vector
   default-language: Haskell2010
 
 test-suite project-euler-test
@@ -75,4 +77,5 @@ test-suite project-euler-test
     , optparse-applicative
     , project-euler
     , raw-strings-qq
+    , vector
   default-language: Haskell2010

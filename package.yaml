@@ -24,6 +24,7 @@ dependencies:
 - QuickCheck
 - optparse-applicative
 - raw-strings-qq
+- vector
 
 ghc-options:
 - -Wall
