@@ -2,8 +2,11 @@ import Test.Hspec
 import Test.QuickCheck
 import Test.Hspec.QuickCheck
 
+import qualified Data.Vector as V
+
 import Lib (isPrime)
 import qualified PE.P1to20
+import PE.P1to20 (largestProductInGrid)
 
 main :: IO ()
 main = hspec $ do
@@ -38,4 +41,30 @@ main = hspec $ do
     describe "suSqDiff" $ do
       prop "must match it's naive version" $
         \l -> PE.P1to20.suSqDiff l `shouldBe` PE.P1to20.suSqDiffNaive l
+
+  describe "P(11) Largest Product in a Grid" $ do
+    describe "fetchLine" $
+      let grid = PE.P1to20.p11Input
+          fetchLine = PE.P1to20.fetchLine
+        in do
+      it "returns the numbers at the given position" $ do
+        let p = (6, 8)
+            got = fetchLine p ((+1), (+1)) grid 4
+        got `shouldBe` Just [26,63,78,14]
+      it "return Nothing for a line crossing out of the grid" $ do
+        let p = (18, 18)
+            got = fetchLine p ((+1), (+1)) grid 4
+        got `shouldBe` Nothing
+    describe "largestProductInGrid" $
+      let grid = V.fromList [ V.fromList cols | cols <- grid' ]
+          grid' = [[1, 2, 4, 5],
+                   [1, 1, 3, 3],
+                   [2, 5, 3, 1],
+                   [3, 1, 3, 6]]
+          largest = PE.P1to20.largestProductInGrid grid
+        in do
+      it "should return the largest product" $ do
+        largest 1 `shouldBe` 6
+        largest 2 `shouldBe` 20
+        largest 3 `shouldBe` 75
 
