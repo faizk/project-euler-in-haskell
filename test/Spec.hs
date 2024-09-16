@@ -6,7 +6,7 @@ import qualified Data.Vector as V
 
 import Lib (isPrime)
 import qualified PE.P1to20
-import PE.P1to20 (largestProductInGrid)
+import PE.P1to20 (largestProductInGrid, divisors)
 
 main :: IO ()
 main = hspec $ do
@@ -67,4 +67,31 @@ main = hspec $ do
         largest 1 `shouldBe` 6
         largest 2 `shouldBe` 20
         largest 3 `shouldBe` 75
+
+  describe "P(12) Highly Divisible Triangular Number" $
+    let decomp = PE.P1to20.primeDecompose
+        uniqC = PE.P1to20.uniqC
+        divs = PE.P1to20.divisors
+        ndivs = PE.P1to20.numDivisors
+    in do
+    describe "primeDecompose" $ do
+      prop "decomposes any number into it's prime components" $
+        \n -> n >= 1 ==> do let ps = decomp n
+                            product ps `shouldBe` n
+                            ps `shouldSatisfy` all isPrime
+    describe "uniqC" $ do
+      it "should count consequtive repeats" $ do
+        uniqC "" `shouldBe` []
+        uniqC "a" `shouldBe` [('a', 1)]
+        uniqC "aba" `shouldBe` [('a',1), ('b',1), ('a',1)]
+        uniqC "abba" `shouldBe` [('a',1), ('b',2), ('a',1)]
+    describe "primeDecompose . uniqC" $ do
+      prop "decomposes any number into it's prime components" $
+        \n -> n >= 1 ==>
+          do let pd = PE.P1to20.uniqC . decomp
+                 got = product $ map (uncurry (^)) (pd n)
+             got `shouldBe` n
+    describe "numDivisors" $ do
+      prop "should return the number of divisors of any number" $
+        \n -> ndivs n `shouldBe` length (divs n)
 

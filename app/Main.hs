@@ -44,6 +44,8 @@ solutions = [1..] `zip`
      return $ show $ PE.P1to20.p10SumOfPrimes 2_000_000)
   , ("What is the greatest product of four adjacent numbers in the same direction (up, down, left, right, or diagonally) in the 20x20 grid?",
       return $ show PE.P1to20.p11Ans )
+  , ("What is the value of the first triangle number to have over five hundred divisors?",
+      return $ show $ take 1 $ dropWhile ((<= 500) . snd) PE.P1to20.triangleNumNumDivisors)
   ]
 
 runSolution :: Args -> IO ()

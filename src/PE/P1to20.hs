@@ -1,5 +1,7 @@
 {-# LANGUAGE NumericUnderscores #-}
 {-# LANGUAGE QuasiQuotes #-}
+{-# LANGUAGE TupleSections #-}
+
 module PE.P1to20
     ( multiplesOf3Or5, sumOfMultiplesOf3Or5Below1000
     , fibonacci, sumOfEvenFibonacciTermsWithin4MM
@@ -11,9 +13,10 @@ module PE.P1to20
     , pythagoreanTriplets, p9
     , primes', p10SumOfPrimes
     , p11Input, fetchLine, draw, largestProductInGrid, p11Ans
+    , primeDecompose, uniqC, triangleNumDivisorsNaive, divisors, numDivisors, triangleNumNumDivisors
     ) where
 
-import Data.List (find)
+import Data.List (find, subsequences, sort)
 
 import Numeric.Natural
 import Text.RawString.QQ
@@ -166,13 +169,6 @@ p10SumOfPrimes lim = sum $ takeWhile (<= lim) primes'
 -- P11
 -- Largest Product in a Grid
 
-nxt :: (Int, Int) -> Int -> [[(Int, Int)]]
-nxt (x,y) n          = ($ n) <$> [right, down, diag]
-  where right = draw' ((+1), id)
-        down  = draw' (id, (+1))
-        diag  = draw' ((+1), (+1))
-        draw' = draw (x,y)
-
 type Grid a = V.Vector (V.Vector a)
 type GridDir = (Int -> Int, Int -> Int)
 
@@ -229,3 +225,44 @@ p11Input = V.fromList [V.fromList cols | cols <- lists]
 
 p11Ans :: Integer
 p11Ans = largestProductInGrid p11Input 4
+
+-- P12
+
+primeDecompose :: Integer -> [Integer]
+primeDecompose n =
+  sweep (takeWhile (<= root n) (2 : filter odd [3..])) n
+  where
+    root = floor . sqrt . fromIntegral
+    sweep [] n' | n' >= 2 = [n']
+    sweep [] _ = []
+    sweep (p:ps) n' | n' `rem` p /= 0 = sweep ps n'
+    sweep (p:ps) n' = p : sweep (takeWhile (<= root n') (p:ps)) (n' `div` p)
+
+-- Sort of like the UNIX `uniq -c` command
+uniqC :: (Eq a) => [a] -> [(a, Int)]
+uniqC = uniq . map (, 1) where
+  uniq [] = []
+  uniq [x] = [x]
+  uniq ((a,i) : (b,j) : rest) | a == b = uniq ((a, i+j) : rest)
+  uniq (x:xs) = x : uniq xs
+
+triangleNumDivisorsNaive :: [(Integer, [Integer])]
+triangleNumDivisorsNaive = map (\n -> (n, divisors n)) $ tri <$> [1..]
+  where tri n = ((n+1)*n) `div` 2
+
+divisors :: Integer -> [Integer]
+divisors = map (product . fst) . uniqC . sort. subsequences . primeDecompose
+
+{- the use of `subsequences` is the function above (`divisors`)
+ - reminds one that there's a simpler formula if all we want is the
+ - number of divisors.
+ -
+ - d(n) = (p_1 + 1) * (p_2 + 1) ...
+ - where p_{i} is exponent of the ith prime factor.
+ - -}
+numDivisors :: Integer -> Int
+numDivisors = product . map ((+1) . snd) . uniqC . primeDecompose
+
+triangleNumNumDivisors :: [(Integer, Int)]
+triangleNumNumDivisors = map (\n -> (n, numDivisors n)) $ tri <$> [1..]
+  where tri n = ((n+1)*n) `div` 2
