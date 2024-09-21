@@ -95,3 +95,18 @@ main = hspec $ do
       prop "should return the number of divisors of any number" $
         \n -> ndivs n `shouldBe` length (divs n)
 
+  describe "P(12) Large Sum" $
+    let base10 = PE.P1to20.base10digits
+        pow10 n p = n * (10^p)
+        toInt = sum . map (uncurry pow10)
+        result = PE.P1to20.p13Result
+      in do
+    prop "base10digits" $
+      \n p -> n >= 0 && p >= 0 ==>
+        toInt (base10 (n,p)) `shouldBe` (n `pow10` p)
+    prop "p13Result" $
+      \ns -> let expected = sum ns'
+                 input = map show ns'
+                 ns' = map abs ns
+             in toInt (result input) `shouldBe` expected
+

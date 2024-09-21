@@ -46,6 +46,8 @@ solutions = [1..] `zip`
       return $ show PE.P1to20.p11Ans )
   , ("What is the value of the first triangle number to have over five hundred divisors?",
       return $ show $ take 1 $ dropWhile ((<= 500) . snd) PE.P1to20.triangleNumNumDivisors)
+  , ("Work out the first ten digits of the sum of the following one-hundred 50-digit numbers.",
+      return $ show PE.P1to20.p13Ans)
   ]
 
 runSolution :: Args -> IO ()
