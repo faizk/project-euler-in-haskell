@@ -15,6 +15,7 @@ module PE.P1to20
     , p11Input, fetchLine, draw, largestProductInGrid, p11Ans
     , primeDecompose, uniqC, triangleNumDivisorsNaive, divisors, numDivisors, triangleNumNumDivisors
     , base10digits, p13Result, p13AnsNaive, p13Ans
+    , p14Ans, collatz
     ) where
 
 import Data.List (find, subsequences, sort, sortOn)
@@ -404,3 +405,14 @@ p13Result strInp = base10Reduce $ concat inp
 
 p13Ans :: [Char]
 p13Ans = take 10 $ reverse $ intToDigit . fst <$> p13Result p13Input
+
+-- P14
+-- Longest Collatz Sequence
+
+collatz :: Natural -> [Natural]
+collatz 1 = [1]
+collatz n | even n = n : collatz (n `div` 2)
+collatz n = n : collatz ((3*n) + 1)
+
+p14Ans :: (Int, Natural)
+p14Ans = maximum $ (\x -> ((length . collatz) x, x)) <$> [1..1_000_000]

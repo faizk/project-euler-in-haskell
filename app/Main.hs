@@ -48,6 +48,8 @@ solutions = [1..] `zip`
       return $ show $ take 1 $ dropWhile ((<= 500) . snd) PE.P1to20.triangleNumNumDivisors)
   , ("Work out the first ten digits of the sum of the following one-hundred 50-digit numbers.",
       return $ show PE.P1to20.p13Ans)
+  , ("Which starting number, under one million, produces the longest (collatz) chain?",
+      return $ show PE.P1to20.p14Ans)
   ]
 
 runSolution :: Args -> IO ()

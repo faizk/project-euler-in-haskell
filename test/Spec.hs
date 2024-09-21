@@ -3,10 +3,14 @@ import Test.QuickCheck
 import Test.Hspec.QuickCheck
 
 import qualified Data.Vector as V
+import Numeric.Natural (Natural)
 
 import Lib (isPrime)
 import qualified PE.P1to20
 import PE.P1to20 (largestProductInGrid, divisors)
+
+instance Arbitrary Natural where
+  arbitrary = fromIntegral <$> sized (\s -> chooseInt (0, (abs s `div` 2)))
 
 main :: IO ()
 main = hspec $ do
@@ -110,3 +114,6 @@ main = hspec $ do
                  ns' = map abs ns
              in toInt (result input) `shouldBe` expected
 
+  describe "P(14) Collatz" $ do
+    prop "the last element of any collatz sequence is one" $
+      \n -> n >= 1 ==> last (PE.P1to20.collatz n) `shouldBe` 1
