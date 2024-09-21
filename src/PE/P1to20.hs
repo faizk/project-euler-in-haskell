@@ -25,7 +25,6 @@ import Data.Char (digitToInt, isDigit, isSpace, intToDigit)
 import Data.Maybe (mapMaybe)
 import qualified Data.Vector as V
 import Data.Vector ((!?))
-import Data.Semigroup (Max(Max))
 
 
 multiplesOf3Or5 :: Int -> [Int]
