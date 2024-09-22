@@ -114,6 +114,12 @@ main = hspec $ do
                  ns' = map abs ns
              in toInt (result input) `shouldBe` expected
 
-  describe "P(14) Collatz" $ do
+  describe "P(14) Collatz" $
+    let collatz = PE.P1to20.collatz
+        collatzLen = PE.P1to20.collatzLen
+    in do
     prop "the last element of any collatz sequence is one" $
-      \n -> n >= 1 ==> last (PE.P1to20.collatz n) `shouldBe` 1
+      \n -> n >= 1 ==> (last . collatz) n `shouldBe` 1
+    describe "collatzLen" $ do
+      prop "tells you the length of any collatz sequence" $
+        \n -> n >= 1 ==> collatzLen n `shouldBe` (fromIntegral . length . collatz) n

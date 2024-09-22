@@ -15,7 +15,7 @@ module PE.P1to20
     , p11Input, fetchLine, draw, largestProductInGrid, p11Ans
     , primeDecompose, uniqC, triangleNumDivisorsNaive, divisors, numDivisors, triangleNumNumDivisors
     , base10digits, p13Result, p13AnsNaive, p13Ans
-    , p14Ans, collatz
+    , p14AnsNaive, p14Ans, collatz, collatzLen
     ) where
 
 import Data.List (find, subsequences, sort, sortOn)
@@ -414,5 +414,15 @@ collatz 1 = [1]
 collatz n | even n = n : collatz (n `div` 2)
 collatz n = n : collatz ((3*n) + 1)
 
-p14Ans :: (Int, Natural)
-p14Ans = maximum $ (\x -> ((length . collatz) x, x)) <$> [1..1_000_000]
+p14AnsNaive :: (Int, Natural)
+p14AnsNaive = maximum $ (\x -> ((length . collatz) x, x)) <$> [1..1_000_000]
+
+-- Probably better only in terms of space
+collatzLen :: Natural -> Natural
+collatzLen = collatzLen' 1
+    where collatzLen' acc n | even n = collatzLen' (acc + 1) (n `div` 2)
+          collatzLen' acc 1 = acc
+          collatzLen' acc n = collatzLen' (acc + 1) ((3*n) + 1)
+
+p14Ans :: (Natural, Natural)
+p14Ans = maximum $ (\x -> (collatzLen x, x)) <$> [1..1_000_000]
