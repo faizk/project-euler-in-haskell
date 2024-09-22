@@ -9,8 +9,10 @@ import Lib (isPrime)
 import qualified PE.P1to20
 import PE.P1to20 (largestProductInGrid, divisors)
 
-instance Arbitrary Natural where
-  arbitrary = fromIntegral <$> sized (\s -> chooseInt (0, (abs s `div` 2)))
+newtype PosNat = PosNat Natural deriving (Eq, Show)
+
+instance Arbitrary PosNat where
+  arbitrary = PosNat . fromIntegral <$> sized (\s -> chooseInt (1, abs s))
 
 main :: IO ()
 main = hspec $ do
@@ -119,7 +121,7 @@ main = hspec $ do
         collatzLen = PE.P1to20.collatzLen
     in do
     prop "the last element of any collatz sequence is one" $
-      \n -> n >= 1 ==> (last . collatz) n `shouldBe` 1
+      \(PosNat n) -> (last . collatz) n `shouldBe` 1
     describe "collatzLen" $ do
       prop "tells you the length of any collatz sequence" $
-        \n -> n >= 1 ==> collatzLen n `shouldBe` (fromIntegral . length . collatz) n
+        \(PosNat n) -> collatzLen n `shouldBe` (fromIntegral . length . collatz) n
