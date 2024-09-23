@@ -50,6 +50,8 @@ solutions = [1..] `zip`
       return $ show PE.P1to20.p13Ans)
   , ("Which starting number, under one million, produces the longest (collatz) chain?",
       return $ show PE.P1to20.p14Ans)
+  , ("How many 'latice grid' routes are there through a 20x20 grid?",
+      return $ show $ PE.P1to20.numRoutes 20 20)
   ]
 
 runSolution :: Args -> IO ()

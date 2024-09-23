@@ -9,10 +9,8 @@ import Lib (isPrime)
 import qualified PE.P1to20
 import PE.P1to20 (largestProductInGrid, divisors)
 
-newtype PosNat = PosNat Natural deriving (Eq, Show)
-
-instance Arbitrary PosNat where
-  arbitrary = PosNat . fromIntegral <$> sized (\s -> chooseInt (1, abs s))
+instance Arbitrary Natural where
+  arbitrary = fromIntegral . getPositive <$> (arbitrary :: Gen (Positive Integer))
 
 main :: IO ()
 main = hspec $ do
@@ -116,12 +114,23 @@ main = hspec $ do
                  ns' = map abs ns
              in toInt (result input) `shouldBe` expected
 
-  describe "P(14) Collatz" $
-    let collatz = PE.P1to20.collatz
-        collatzLen = PE.P1to20.collatzLen
+  modifyMaxSize (const 100) $
+    describe "P(14) Collatz" $
+      let collatz = PE.P1to20.collatz
+          collatzLen = PE.P1to20.collatzLen
+      in do
+      prop "the last element of any collatz sequence is one" $ \(Positive n) ->
+        (last . collatz) n `shouldBe` 1
+      describe "collatzLen" $ do
+        prop "tells you the length of any collatz sequence" $ \(Positive n) ->
+          collatzLen n `shouldBe` (fromIntegral . length . collatz) n
+
+  describe "P(15) Lattice Paths" $
+    let routes = PE.P1to20.numRoutes
+        routesNaive = PE.P1to20.numRoutesNaive
     in do
-    prop "the last element of any collatz sequence is one" $
-      \(PosNat n) -> (last . collatz) n `shouldBe` 1
-    describe "collatzLen" $ do
-      prop "tells you the length of any collatz sequence" $
-        \(PosNat n) -> collatzLen n `shouldBe` (fromIntegral . length . collatz) n
+    describe "numRoutes" $ do
+      modifyMaxSize (const 11) $
+        prop "should match the naive version" $ \(Positive x) (Positive y) ->
+          routes x y `shouldBe` routesNaive x y
+

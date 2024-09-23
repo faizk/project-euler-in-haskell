@@ -16,6 +16,7 @@ module PE.P1to20
     , primeDecompose, uniqC, triangleNumDivisorsNaive, divisors, numDivisors, triangleNumNumDivisors
     , base10digits, p13Result, p13AnsNaive, p13Ans
     , p14AnsNaive, p14Ans, collatz, collatzLen
+    , numRoutesNaive, numRoutes
     ) where
 
 import Data.List (find, subsequences, sort, sortOn)
@@ -426,3 +427,19 @@ collatzLen = collatzLen' 1
 
 p14Ans :: (Natural, Natural)
 p14Ans = maximum $ (\x -> (collatzLen x, x)) <$> [1..1_000_000]
+
+-- P15
+
+numRoutesNaive :: Integer -> Integer -> Integer
+numRoutesNaive = w where
+  w 0  0  = 0
+  w 0  _  = 1
+  w _  0  = 1
+  w x  y  = w (x - 1) y + w x (y - 1)
+
+fact :: Integer -> Integer
+fact 1 = 1; fact n = n * fact (n-1)
+
+numRoutes :: Integer -> Integer -> Integer
+numRoutes x y = fact (x+y) `div` (fact x * fact y)
+
