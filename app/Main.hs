@@ -52,6 +52,8 @@ solutions = [1..] `zip`
       return $ show PE.P1to20.p14Ans)
   , ("How many 'latice grid' routes are there through a 20x20 grid?",
       return $ show $ PE.P1to20.numRoutes 20 20)
+  , ("What is the sum of the digits of the number 2^1000?",
+      return $ show $ PE.P1to20.sumOfDigits (2^1000))
   ]
 
 runSolution :: Args -> IO ()

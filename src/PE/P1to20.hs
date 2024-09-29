@@ -17,6 +17,7 @@ module PE.P1to20
     , base10digits, p13Result, p13AnsNaive, p13Ans
     , p14AnsNaive, p14Ans, collatz, collatzLen
     , numRoutesNaive, numRoutes
+    , sumOfDigits
     ) where
 
 import Data.List (find, subsequences, sort, sortOn)
@@ -443,3 +444,8 @@ fact 1 = 1; fact n = n * fact (n-1)
 numRoutes :: Integer -> Integer -> Integer
 numRoutes x y = fact (x+y) `div` (fact x * fact y)
 
+-- P16
+
+-- too easy, so tried in C for fun (see src/PE/p15.c)
+sumOfDigits :: Integer -> Int
+sumOfDigits = sum . map digitToInt . show
