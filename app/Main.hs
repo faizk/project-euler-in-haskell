@@ -54,6 +54,8 @@ solutions = [1..] `zip`
       return $ show $ PE.P1to20.numRoutes 20 20)
   , ("What is the sum of the digits of the number 2^1000?",
       return $ show $ PE.P1to20.sumOfDigits (2^1000))
+  , ("If all the numbers from 1 to 1,000 (one thousand) inclusive were written out in words, how many letters would be used? ",
+      return $ show $ sum $ length <$> ([1..1000] >>= PE.P1to20.inWords))
   ]
 
 runSolution :: Args -> IO ()

@@ -18,6 +18,7 @@ module PE.P1to20
     , p14AnsNaive, p14Ans, collatz, collatzLen
     , numRoutesNaive, numRoutes
     , sumOfDigits
+    , inWords
     ) where
 
 import Data.List (find, subsequences, sort, sortOn)
@@ -449,3 +450,51 @@ numRoutes x y = fact (x+y) `div` (fact x * fact y)
 -- too easy, so tried in C for fun (see src/PE/p15.c)
 sumOfDigits :: Integer -> Int
 sumOfDigits = sum . map digitToInt . show
+
+-- P17
+inWords :: Natural -> [String]
+inWords =
+  d
+    where
+      d :: Natural -> [String]
+      d 0  = []
+      d 1  = ["one"]
+      d 2  = ["two"]
+      d 3  = ["three"]
+      d 4  = ["four"]
+      d 5  = ["five"]
+      d 6  = ["six"]
+      d 7  = ["seven"]
+      d 8  = ["eight"]
+      d 9  = ["nine"]
+      d 10 = ["ten"]
+      d 11 = ["eleven"]
+      d 12 = ["twelve"]
+      d 13 = ["thirteen"]
+      d 14 = ["fourteen"]
+      d 15 = ["fifteen"]
+      d 16 = ["sixteen"]
+      d 17 = ["seventeen"]
+      d 18 = ["eighteen"]
+      d 19 = ["nineteen"]
+      d 20 = ["twenty"]
+      d 30 = ["thirty"]
+      d 40 = ["forty"]
+      d 50 = ["fifty"]
+      d 60 = ["sixty"]
+      d 70 = ["seventy"]
+      d 80 = ["eighty"]
+      d 90 = ["ninety"]
+      d x | x > 20 && x < 100 =
+        d ((x `div` 10) * 10) ++ d (x `rem` 10)
+      d x | x >= 100 && x < 1000 = d (x `div` 100) ++ "hundred" : rest
+        where rest = if r' == 0 then [] else "and" : d r'
+              r' = x `rem` 100
+      d x | x >= 1000 && x < 1_000_000 =
+        d (x `div` 1000) ++ ["thousand"] ++ d (x `rem` 1000)
+      d x | x >= 10^6 && x < 10^9 = illion 6 "m" x
+      d x | x >= 10^9 && x < 10^12 = illion 9 "b" x
+      d x  = illion 12 "tr" x
+      illion p str x =
+        d (x `div` d') ++ [str ++ "illion"] ++ d (x `rem` d')
+          where d' = 10^(p :: Integer)
