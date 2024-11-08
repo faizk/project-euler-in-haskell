@@ -56,6 +56,8 @@ solutions = [1..] `zip`
       return $ show $ PE.P1to20.sumOfDigits (2^1000))
   , ("If all the numbers from 1 to 1,000 (one thousand) inclusive were written out in words, how many letters would be used? ",
       return $ show $ sum $ length <$> ([1..1000] >>= PE.P1to20.inWords))
+  , ("Find the maximum total from top to bottom of the triangle below (starting at the top of the triangle below and moving to adjacent numbers on the row below).",
+      return $ show $ PE.P1to20.llcs PE.P1to20.p18Input)
   ]
 
 runSolution :: Args -> IO ()
